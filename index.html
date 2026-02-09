@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💌 Valentine?</title>
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top, #ffe3ee, #fff);
+      overflow:hidden;
+    }
+    .card{
+      width:min(520px, 92vw);
+      padding:28px;
+      background:rgba(255,255,255,0.9);
+      border:1px solid rgba(255, 90, 150, 0.25);
+      border-radius:18px;
+      box-shadow:0 18px 45px rgba(0,0,0,0.12);
+      text-align:center;
+    }
+    h1{ margin: 0 0 10px; font-size: 30px; }
+    p{ margin: 8px 0 18px; color:#444; }
+    .btns{
+      position:relative;
+      height:72px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      padding:12px 18px;
+      border-radius:14px;
+      font-size:16px;
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow:0 10px 20px rgba(0,0,0,0.12);
+      user-select:none;
+    }
+    #yes{
+      background:#ff4d8d;
+      color:white;
+    }
+    #yes:hover{ transform: translateY(-2px); }
+    #no{
+      background:#f1f1f1;
+      color:#222;
+      position:relative;
+    }
+    .msg{
+      margin-top:16px;
+      font-size:18px;
+      font-weight:600;
+      min-height:28px;
+      color:#d1005b;
+    }
+    .heart{
+      position:fixed;
+      bottom:-30px;
+      font-size:22px;
+      animation: floatUp 2.4s ease-in forwards;
+      opacity:0.9;
+      pointer-events:none;
+    }
+    @keyframes floatUp{
+      to { transform: translateY(-110vh) rotate(20deg); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Hey my love 💘</h1>
+    <p>I made this tiny page just for you.</p>
+    <h1>Will you be my Valentine?</h1>
+
+    <div class="btns" id="playArea">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 🙃</button>
+    </div>
+
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <script>
+    const yes = document.getElementById("yes");
+    const no = document.getElementById("no");
+    const msg = document.getElementById("msg");
+    const playArea = document.getElementById("playArea");
+
+    function popHearts(count = 18){
+      for(let i=0;i<count;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = Math.random() > 0.5 ? "💖" : "💘";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.animationDuration = (1.8 + Math.random()*1.6) + "s";
+        h.style.fontSize = (18 + Math.random()*20) + "px";
+        document.body.appendChild(h);
+        setTimeout(()=> h.remove(), 3500);
+      }
+    }
+
+    yes.addEventListener("click", () => {
+      msg.textContent = "YAY! 💞 Date locked in. I love you 😚";
+      popHearts(26);
+      no.style.display = "none";
+      yes.textContent = "Forever ✅";
+    });
+
+    // Make the NO button run away (playful)
+    function moveNo(){
+      const areaRect = playArea.getBoundingClientRect();
+      const btnRect = no.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
+
+      const x = Math.max(0, Math.random() * maxX);
+      const y = Math.max(0, Math.random() * maxY);
+
+      no.style.position = "absolute";
+      no.style.left = x + "px";
+      no.style.top = y + "px";
+      msg.textContent = "Nice try 😌";
+    }
+
+    no.addEventListener("mouseenter", moveNo);
+    no.addEventListener("click", moveNo);
+  </script>
+</body>
+</html>
